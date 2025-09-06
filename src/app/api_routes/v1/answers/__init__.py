@@ -5,7 +5,6 @@ from .delete import router as delete_router
 
 router = APIRouter()
 
-# Include all answer routes
 router.include_router(get_router, tags=["answers"])
 router.include_router(post_router, tags=["answers"])
 router.include_router(delete_router, tags=["answers"])
