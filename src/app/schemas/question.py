@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import Optional, List
 
 from pydantic import BaseModel
+from pydantic import ConfigDict
 
 from app.schemas.answer import Answer
 
@@ -26,5 +27,4 @@ class Question(QuestionContent, QuestionId):
     created_at: datetime
     answers: List[Answer] = []
     
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

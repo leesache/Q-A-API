@@ -8,7 +8,7 @@ def test_create_get_delete_answer_flow(test_client):
     qid = q_resp.json()["id"]
 
     # Create answer
-    a_payload = {"text": "FastAPI is a modern web framework", "user_id": 1}
+    a_payload = {"text": "FastAPI is a modern web framework", "user_id": "1"}
     a_resp = test_client.post(f"/api/v1/questions/{qid}/answers/", json=a_payload)
     assert a_resp.status_code == HTTPStatus.OK
     answer = a_resp.json()
