@@ -7,6 +7,8 @@ from app.api_routes.v1.questions import router as questions_router
 from app.db.session import engine
 from app.db.base import Base
 from app.schemas import *  # Import schemas to trigger model rebuilding
+from app.core.limiter import limiter
+from slowapi.middleware import SlowAPIMiddleware
 
 
 @asynccontextmanager
@@ -37,7 +39,6 @@ app = FastAPI(
     openapi_url="/openapi.json"  # OpenAPI schema at /openapi.json
 )
 
-# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Configure this properly for production
@@ -45,6 +46,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Add SlowAPI middleware and exception handler
+app.state.limiter = limiter
+app.add_middleware(SlowAPIMiddleware)
 
 # Include routers
 app.include_router(questions_router, prefix="/api/v1")
