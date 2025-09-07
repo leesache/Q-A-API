@@ -14,6 +14,7 @@ async def get_answer_by_id(
     db: AsyncSession = Depends(get_db)
 ):
     """Get a specific answer by ID"""
+    
     answer = await get_answer(db, answer_id=answer_id)
     if not answer:
         raise HTTPException(status_code=404, detail="Answer not found")
