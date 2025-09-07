@@ -1,0 +1,24 @@
+from fastapi import APIRouter, Depends, HTTPException, Request
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.db.session import get_db
+from app.service.answer import AnswerService
+from app.core.logger import get_logger
+from app.core.limiter import limiter
+
+
+logger = get_logger(__name__)
+
+router = APIRouter()
+
+
+@router.delete("/answers/{answer_id}")
+@limiter.limit("5/second")
+async def delete_answer_by_id(
+    request: Request,
+    answer_id: int,
+    db: AsyncSession = Depends(get_db)
+):
+    """Delete an answer by ID"""
+    deleted_count = await AnswerService(db).service_delete_answer(answer_id)
+    return {"message": f"Answer with id {answer_id} deleted successfully"}
