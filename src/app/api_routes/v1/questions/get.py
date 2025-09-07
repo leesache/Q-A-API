@@ -5,11 +5,13 @@ from typing import List
 from app.db.session import get_db
 from app.schemas.question import Question
 from app.service.question import QuestionService
+from app.core.limiter import limiter
 
 router = APIRouter()
 
 
 @router.get("/questions/", response_model=List[str])
+@limiter.limit("5/second")
 async def get_all_questions(
     db: AsyncSession = Depends(get_db)
 ):
@@ -18,6 +20,7 @@ async def get_all_questions(
 
 
 @router.get("/questions/{question_id}", response_model=Question)
+@limiter.limit("5/second")
 async def get_question_by_id(
     question_id: int,
     db: AsyncSession = Depends(get_db)

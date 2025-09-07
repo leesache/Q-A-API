@@ -8,3 +8,4 @@ alembic==1.16.5
 loguru==0.7.3
 asyncpg==0.30.0
 greenlet==3.2.4
+slowapi==0.1.9
