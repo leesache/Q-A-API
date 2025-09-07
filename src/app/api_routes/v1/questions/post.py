@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_db
@@ -12,6 +12,7 @@ router = APIRouter()
 @router.post("/questions/", response_model=Question)
 @limiter.limit("5/second")
 async def create_new_question(
+    request: Request,
     question: QuestionCreate,
     db: AsyncSession = Depends(get_db)
 ):

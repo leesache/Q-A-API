@@ -69,8 +69,24 @@ src/
 └── requirements.txt        # Python зависимости
 ```
 
+
+
 ## Переменные окружения
 
 Посмотрите на файл .env.template и расположите свой .env в той же директории
 
 - `DATABASE_URL` - Строка подключения к PostgreSQL (обязательно)
+
+## Запуск тестов
+
+1. Установите зависимости для тестов (из директории `src`):
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. Запустите тесты:
+   ```bash
+   pytest -q src/tests
+   ```
+
+По умолчанию интеграционные тесты используют in-memory SQLite (`sqlite+aiosqlite:///:memory:`) и не трогают вашу основную БД.

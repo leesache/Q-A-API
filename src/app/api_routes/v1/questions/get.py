@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 
@@ -13,6 +13,7 @@ router = APIRouter()
 @router.get("/questions/", response_model=List[str])
 @limiter.limit("5/second")
 async def get_all_questions(
+    request: Request,
     db: AsyncSession = Depends(get_db)
 ):
     """Get all questions (returns only text for performance)"""
@@ -22,6 +23,7 @@ async def get_all_questions(
 @router.get("/questions/{question_id}", response_model=Question)
 @limiter.limit("5/second")
 async def get_question_by_id(
+    request: Request,
     question_id: int,
     db: AsyncSession = Depends(get_db)
 ):
