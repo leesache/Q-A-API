@@ -20,6 +20,9 @@ RUN pip install --no-cache-dir --upgrade pip \
 
 COPY src/ .
 
+# Create logs directory
+RUN mkdir -p /app/logs
+
 RUN adduser --disabled-password --gecos '' appuser \
     && chown -R appuser:appuser /app
 USER appuser
