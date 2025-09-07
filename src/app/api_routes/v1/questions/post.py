@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_db
-from app.crud.crud_question import create_question
 from app.schemas.question import QuestionCreate, Question
+from app.service.question import QuestionService
 
 router = APIRouter()
 
@@ -14,5 +14,4 @@ async def create_new_question(
     db: AsyncSession = Depends(get_db)
 ):
     """Create a new question"""
-    new_question = await create_question(db, question=question)
-    return new_question
+    return await QuestionService(db).service_create_question(question)

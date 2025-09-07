@@ -15,7 +15,11 @@ class QuestionService:
 
     async def service_get_question(self, question_id: int) -> Question:
         try:
-            return await get_question(self.session, question_id)
+            question = await get_question(self.session, question_id)
+            if not question:
+                logger.info(f"Question with id {question_id} not found")
+                raise NotFoundException(f"Question with id {question_id} not found")
+            return question
         except NotFoundException as e:
             logger.info(f"Question with id {question_id} not found")
             raise NotFoundException(f"Question with id {question_id} not found") from e
@@ -48,7 +52,11 @@ class QuestionService:
 
     async def service_delete_question(self, question_id: int) -> int:
         try:
-            return await delete_question(self.session, question_id)
+            deleted = await delete_question(self.session, question_id)
+            if deleted <= 0:
+                logger.info(f"Question with id {question_id} not found")
+                raise NotFoundException(f"Question with id {question_id} not found")
+            return deleted
         except BadRequestException as e:
             logger.warning(f"Bad request: {e}")
             raise BadRequestException(f"Bad request: {e}") from e
