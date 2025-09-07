@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_db
@@ -11,6 +11,7 @@ router = APIRouter()
 @router.delete("/questions/{question_id}")
 @limiter.limit("5/second")
 async def delete_question_by_id(
+    request: Request,
     question_id: int,
     db: AsyncSession = Depends(get_db)
 ):

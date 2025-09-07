@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_db
@@ -12,6 +12,7 @@ router = APIRouter()
 @router.post("/questions/{question_id}/answers/", response_model=Answer)
 @limiter.limit("5/second")
 async def create_answer_for_question(
+    request: Request,
     question_id: int,
     answer: AnswerCreate,
     db: AsyncSession = Depends(get_db)
